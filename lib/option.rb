@@ -1,5 +1,9 @@
-require "option/version"
+require 'option/version'
+require 'option/some'
+require 'option/none'
 
 module Option
-  # Your code goes here...
+  def self.new(unknown)
+    unknown.nil? ? None : Some.new(unknown)
+  end
 end
