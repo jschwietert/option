@@ -1,15 +1,21 @@
 module None
-  def self.defined?
+  module_function
+
+  def defined?
     false
   end
 
-  def self.empty?
+  def empty?
     true
   end
 
-  def self.==(that)
-    that.class == self.class
+  def ==(that)
+    that.class === None
   end
 
-  def self.map; end
+  def ===(that)
+    self.== that
+  end
+
+  def map; end
 end

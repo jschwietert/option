@@ -23,4 +23,48 @@ describe Option do
       expect(Option.new([:one => 'thing one', :two => 'thing two'])).to be_an_instance_of Some
     end
   end
+
+  describe 'case semantics' do
+    it 'allows Some to be identified' do
+      one = Option.new 1
+
+      result =
+        case one
+          when Some
+            true
+          when None
+            false
+        end
+
+      expect(result).to be == true
+    end
+
+    it 'allows None to be identified' do
+      nothing = Option.new nil
+
+      result =
+          case nothing
+            when Some
+              true
+            when None
+              false
+          end
+
+      expect(result).to be == false
+    end
+
+    it 'allows Some to be identified by its contents' do
+      one = Option.new 1
+
+      result =
+          case one
+            when Some.new(2)
+              false
+            when Some.new(1)
+              true
+          end
+
+      expect(result).to be == true
+    end
+  end
 end

@@ -1,6 +1,6 @@
 class Some
   def initialize(thing)
-    raise ArgumentError.new("nil is not something") if thing == nil
+    fail ArgumentError, "nil is not something" unless thing
 
     @thing = thing
   end
