@@ -30,10 +30,10 @@ describe Option do
 
       result =
         case one
-          when Some
-            true
           when None
             false
+          when Some
+            true
         end
 
       expect(result).to be == true

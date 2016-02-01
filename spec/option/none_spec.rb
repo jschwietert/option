@@ -1,8 +1,14 @@
 require 'option/none'
 
 describe None do
-  it 'is a singleton' do
-    expect(None).to be None
+  describe 'singleton properties' do
+    it 'cannot be instantiated' do
+      expect{ None.new }.to raise_error NoMethodError
+    end
+
+    it 'has only one reference' do
+      expect(None.object_id).to be None.object_id
+    end
   end
 
   describe '#defined?' do

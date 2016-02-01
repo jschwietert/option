@@ -1,15 +1,12 @@
 require 'option/some'
 
 describe Some do
-  SUPPORTED_DATA =
-        ['thing',
-         1,
-         1.0,
-         ['thing one', 'thing two'],
-         [:one => 'thing one', :two => 'thing two']]
-
-  def for_all
-    SUPPORTED_DATA.each{ |thing| yield thing}
+  def supported_data
+    ['thing',
+     1,
+     1.0,
+     ['thing one', 'thing two'],
+     [:one => 'thing one', :two => 'thing two']]
   end
 
   describe '#new' do
@@ -18,25 +15,25 @@ describe Some do
     end
 
     it 'returns an instance when given some thing' do
-      for_all{ |thing| expect(Some.new(thing)).to be_an_instance_of Some }
+      supported_data.each{ |thing| expect(Some.new(thing)).to be_an_instance_of Some }
     end
   end
 
   describe '#defined?' do
     it 'is always defined' do
-      for_all{ |thing| expect(Some.new(thing)).to be_defined }
+      supported_data.each{ |thing| expect(Some.new(thing)).to be_defined }
     end
   end
 
   describe '#empty?' do
     it 'is never empty' do
-      for_all{ |thing| expect(Some.new(thing)).not_to be_empty }
+      supported_data.each{ |thing| expect(Some.new(thing)).not_to be_empty }
     end
   end
 
   describe '#==' do
     it 'returns true if the contents are the same' do
-      for_all{ |thing| expect(Some.new(thing)).to be == Some.new(thing) }
+      supported_data.each{ |thing| expect(Some.new(thing)).to be == Some.new(thing) }
     end
 
     it 'returns false if the contents are different' do
@@ -50,13 +47,13 @@ describe Some do
     end
 
     it 'returns false if compared to None' do
-      for_all{ |thing| expect(Some.new(thing)).not_to be None }
+      supported_data.each{ |thing| expect(Some.new(thing)).not_to be None }
     end
   end
 
   describe '#map' do
     it 'applies the given block to the contents and returns the result in some if a non-nil value is returned' do
-      for_all do |thing|
+      supported_data.each do |thing|
         result = Some.new(thing).map{ |contents| if contents != nil then 10 else nil end }
 
         expect(result).to be == Some.new(10)
@@ -64,7 +61,7 @@ describe Some do
     end
 
     it 'applies the given block to the contents and returns none if the block returns nil' do
-      for_all do |thing|
+      supported_data.each do |thing|
         result = Some.new(thing).map{ |contents| if contents == nil then 10 else nil end }
 
         expect(result).to be None
@@ -73,10 +70,22 @@ describe Some do
   end
 
   describe 'hashability' do
-    xit 'uses the contents hash' do
+    it 'treats the same content as one unique key' do
+      hash_of_somes = {Some.new(1) => 'some one', Some.new(1) => 'another one'}
+
+      expect(hash_of_somes.size).to be == 1
     end
 
-    xit 'uses the contents equals for hash equality' do
+    it 'treats different content as two unique keys' do
+      hash_of_somes = {Some.new(1) => 'some one', Some.new("1") => 'just one string'}
+
+      expect(hash_of_somes.size).to be == 2
+    end
+
+    it 'treats content and the raw value of the content as two unique keys' do
+      hash_of_somes = {Some.new(1) => 'some one', 1 => 'the number'}
+
+      expect(hash_of_somes.size).to be == 2
     end
   end
 end
