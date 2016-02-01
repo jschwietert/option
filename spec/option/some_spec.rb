@@ -54,7 +54,7 @@ describe Some do
   describe '#map' do
     it 'applies the given block to the contents and returns the result in some if a non-nil value is returned' do
       supported_data.each do |thing|
-        result = Some.new(thing).map{ |contents| if contents != nil then 10 else nil end }
+        result = Some.new(thing).map{ |contents| contents ? 10 : nil }
 
         expect(result).to be == Some.new(10)
       end
@@ -62,7 +62,7 @@ describe Some do
 
     it 'applies the given block to the contents and returns none if the block returns nil' do
       supported_data.each do |thing|
-        result = Some.new(thing).map{ |contents| if contents == nil then 10 else nil end }
+        result = Some.new(thing).map{ |contents| contents ? nil : 10 }
 
         expect(result).to be None
       end

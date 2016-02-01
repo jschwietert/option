@@ -1,4 +1,4 @@
-class Some
+class Some < Enumerator
   def initialize(thing)
     fail ArgumentError, "nil is not something" unless thing
 
@@ -21,9 +21,13 @@ class Some
     @thing.hash
   end
 
-  def map
+  def each
     Option.new(yield @thing)
   end
+
+  # def map
+  #   Option.new(yield @thing)
+  # end
 
   alias_method :eql?, :==
 
